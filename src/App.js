@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import GlobalStyle from './globalStyles';
+import Home from './Pages/Home/Home';
+import Chats from './Pages/Chats/Chats';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ProfileDrawerToggleProvider } from './contexts/ProfileDrawerContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { ChatProvider } from './contexts/CurrentChat';
+import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <ProfileDrawerToggleProvider>
+          <ChatProvider>
+            <GlobalStyle />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <PrivateRoute path="/chats" component={Chats} />
+            </Switch>
+          </ChatProvider>
+        </ProfileDrawerToggleProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
